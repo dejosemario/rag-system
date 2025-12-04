@@ -1,6 +1,3 @@
-# main.py - Following the starter template structure
-# Endpoints: /upload, /prompt, /rechunk
-
 import os
 from pathlib import Path
 from typing import List
