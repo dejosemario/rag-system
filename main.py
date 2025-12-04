@@ -110,7 +110,7 @@ def load_documents(data_dir: str) -> List[dict]:
     for docx_file in data_path.glob("**/*.docx"):
         try:
             print(f"Loading DOCX: {docx_file.name}")
-            doc = docx.Document(docx_file)
+            doc = docx.Document(str(docx_file))
             text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
             documents.append({"content": text, "source": str(docx_file.name)})
         except Exception as e:
@@ -286,6 +286,7 @@ async def startup_event():
 
 # TEMPLATE ENDPOINTS
 
+
 @app.post("/upload")
 async def upload(file: UploadFile):
     """
@@ -296,7 +297,7 @@ async def upload(file: UploadFile):
         # Validate filename
         if not file.filename:
             raise HTTPException(status_code=400, detail="Filename is required")
-            
+
         # Create data directory if it doesn't exist
         data_path = Path(RAG_DATA_DIR)
         data_path.mkdir(parents=True, exist_ok=True)
