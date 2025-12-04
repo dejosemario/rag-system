@@ -293,6 +293,10 @@ async def upload(file: UploadFile):
     The document will be automatically chunked and indexed.
     """
     try:
+        # Validate filename
+        if not file.filename:
+            raise HTTPException(status_code=400, detail="Filename is required")
+            
         # Create data directory if it doesn't exist
         data_path = Path(RAG_DATA_DIR)
         data_path.mkdir(parents=True, exist_ok=True)
@@ -321,7 +325,7 @@ async def upload(file: UploadFile):
 async def prompt(payload: dict):
     """
     Query the RAG system with a prompt.
-    
+
     Expected payload:
     {
         "prompt": "Your question here",
@@ -353,7 +357,7 @@ async def prompt(payload: dict):
 async def rechunk(payload: dict):
     """
     Re-chunk all documents with a new chunk length.
-    
+
     Expected payload:
     {
         "chunk_length": 500
